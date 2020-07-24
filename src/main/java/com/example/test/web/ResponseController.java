@@ -19,11 +19,11 @@ public class ResponseController {
     private final PortfolioService portfolioService;
 
     @GetMapping("/product")
-    public ResponseEntity<List<Product>> packageType(@NonNull @RequestParam(value = "productSystemUserId", required = true) String productSystemUserId) throws CustomException {
+    public ResponseEntity<List<Product>> packageType(@NonNull @RequestParam(value = "productSystemUserId", required = true) String productSystemUserId)  {
         List<Product> productsList = new ArrayList<>();
         PortfolioResponseDTO portfolioResponseDTO = portfolioService.getPortfolio(productSystemUserId);
         if (portfolioResponseDTO == null) {
-            throw new CustomException(404,"Получение типа пакета предложения ну удалось, продукт отсутсвует");
+            return ResponseEntity.notFound().header("Error","Получение типа пакета предложения ну удалось, продукт отсутсвует").build();
         }
         // here might be NPE if portfolioResponseDTO is null
         log.info(portfolioResponseDTO.getPackages().toString());
