@@ -30,10 +30,8 @@ public class ResponseController {
         if(portfolioResponseDTO.getPackages().containsKey("PRIVILEGE2")){
             productsList.add(new Product("Card1"));
             productsList.add(new Product("Card2"));
-        }else if(portfolioResponseDTO != null){
+        } else {
             productsList.add(new Product("Card1"));
-        }else{
-            throw new CustomException(500,"Внутренняя ошибка сервера");
         }
         return ResponseEntity.ok(productsList);
     }

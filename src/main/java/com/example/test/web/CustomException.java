@@ -1,6 +1,6 @@
 package com.example.test.web;
 
-public class CustomException extends RuntimeException{
+public class CustomException extends Exception {
     int Code;
     String message;
 
