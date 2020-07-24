@@ -22,14 +22,16 @@ public class ResponseController {
     public ResponseEntity<List<Product>> packageType(@NonNull @RequestParam(value = "productSystemUserId", required = true) String productSystemUserId) throws CustomException {
         List<Product> productsList = new ArrayList<>();
         PortfolioResponseDTO portfolioResponseDTO = portfolioService.getPortfolio(productSystemUserId);
+        if (portfolioResponseDTO == null) {
+            throw new CustomException(404,"Получение типа пакета предложения ну удалось, продукт отсутсвует");
+        }
+        // here might be NPE if portfolioResponseDTO is null
         log.info(portfolioResponseDTO.getPackages().toString());
         if(portfolioResponseDTO.getPackages().containsKey("PRIVILEGE2")){
             productsList.add(new Product("Card1"));
             productsList.add(new Product("Card2"));
         }else if(portfolioResponseDTO != null){
             productsList.add(new Product("Card1"));
-        }else if(portfolioResponseDTO == null) {
-            throw new CustomException(404,"Получение типа пакета предложения ну удалось, продукт отсутсвует");
         }else{
             throw new CustomException(500,"Внутренняя ошибка сервера");
         }
