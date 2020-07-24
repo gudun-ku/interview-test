@@ -5,7 +5,7 @@ import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
@@ -18,11 +18,12 @@ public class ResponseController {
 
     private final PortfolioService portfolioService;
 
-    @GetMapping("/product")
-    public ResponseEntity<List<Product>> packageType(@NonNull @RequestParam(value = "productSystemUserId", required = true) String productSystemUserId)  {
+    @GetMapping("/product/{productSystemUserId}")
+    public ResponseEntity<List<Product>> packageType(@NonNull @PathVariable(value = "productSystemUserId") String productSystemUserId)  {
         List<Product> productsList = new ArrayList<>();
         PortfolioResponseDTO portfolioResponseDTO = portfolioService.getPortfolio(productSystemUserId);
         if (portfolioResponseDTO == null) {
+            log.info("!!! Portfolio not found !!!");
             return ResponseEntity.notFound().header("Error","Получение типа пакета предложения ну удалось, продукт отсутсвует").build();
         }
         // here might be NPE if portfolioResponseDTO is null
